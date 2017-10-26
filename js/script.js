@@ -1,20 +1,3 @@
-function checkpass(){
-	var pass = document.getElementById('form_password');
-	var pass_re = document.getElementById('form_password_re');
-	var error = document.getElementById('error');
-	if (pass.value == pass_re.value) {
-		error.style.display = "block";
-		error.innerHTML = "";
-	
-	} else {
-		error.style.display = "block";
-		error.innerHTML = "Slaptažodis nesutampa";
-	}
-
-}
-
-
-
 $.getJSON("autodb.php", function(result){
 	$.each(result['allreg'], function(i, field){
 		$("#auto_table_body").append("<tr><td>" + field.id + "</td><td>" + field.owner + "</td><td>" + field.license + "</td><td>" + field.model + "</td><td>" + field.make + "</td><td>" + field.data + "</td></tr>");
@@ -24,29 +7,29 @@ $.getJSON("autodb.php", function(result){
 
 });
 
-/*$.getJSON("autodb.php", function(result){
-	$.each(bam['allreg'], function(i, field){
-		$("#carmodel").append("<option>" + field.model + "</option>");
-	});
 
-});*/
 
-$("#reg").click(function(){
+$("#carmodels").ready(function(){
 
 	$.post("autodb.php",
 	{
-		username: $("#form_username").val(),
-		password: $("#form_password").val(),
-		level: $("#form_level").val()
+		carmodels: $("#carmodels").val(),
 		
 	},
 	function(data, status){
-	   
-			
+
 		
+	   	$.getJSON("autodb.php", function(result){
+
+			$("#carmodels").html('');
+			$.each(result['allreg'], function(i, field){
+				$("#carmodels").append("<option>" + field.model + "</option>");
+			});
+		});
 	});
 
 });
+
 
 $("#ajax_post").click(function(){
 
@@ -90,15 +73,7 @@ $("#order").click(function(){
 
 
 	
-	$.getJSON("autodb.php",
-	 function(result){
-	 	console.log(this);
-			$("#carmodel").html('');
-			$.each(result['allreg'], function(i, field){
-				$("#carmodel").append("<option>" + field.model + "</option>");
-	});
-
-});
+	
 
 
 $("#search").keyup(function(){
@@ -128,27 +103,42 @@ $("#filter").keyup(function(){
 	 	console.log(this);
 			$("#auto_table_body").html('');
 			$.each(result['allreg'], function(i, field){
-				$("#auto_table_body").append("<tr><td>" + field.id + "</td><td>" + field.owner + "</td><td>" + field.license + "</td><td>" + field.model + "</td><td>" + field.make + "</td></tr>");
+				$("#auto_table_body").append("<tr><td>" + field.id + "</td><td>" + field.owner + "</td><td>" + field.license + "</td><td>" + field.model + "</td><td>" + field.make + "</td><td>" + field.data + "</td></tr>");
 	});
 
 });
 });
 
-$("#carmodel").change(function(){
-	console.log($("#carmodel").val());
+$("#carmodels").change(function(){
+
 	$.getJSON("autodb.php",
 	{
-		carmodels: $("#carmodel").val(),
+		filters: $("#carmodels").val()
 	},
 	 function(result){
 	 		console.log(result);
 			$("#auto_table_body").html('');
 			$.each(result['allreg'], function(i, field){
 				
-				$("#auto_table_body").append("<tr><td>" + field.id + "</td><td>" + field.owner + "</td><td>" + field.license + "</td><td>" + field.model + "</td><td>" + field.make + "</td></tr>");
+				$("#auto_table_body").append("<tr><td>" + field.id + "</td><td>" + field.owner + "</td><td>" + field.license + "</td><td>" + field.model + "</td><td>" + field.make + "</td><td>" + field.data + "</td></tr>");
 	});
 
 });
 });
 
+$("#allcars").change(function(){
 
+	$.getJSON("autodb.php",
+	{
+		
+	},
+	 function(result){
+	 		console.log(result);
+			$("#auto_table_body").html('');
+			$.each(result['allreg'], function(i, field){
+				
+				$("#auto_table_body").append("<tr><td>" + field.id + "</td><td>" + field.owner + "</td><td>" + field.license + "</td><td>" + field.model + "</td><td>" + field.make + "</td><td>" + field.data + "</td></tr>");
+	});
+
+});
+});

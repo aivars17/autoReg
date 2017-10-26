@@ -33,21 +33,22 @@ try {
     	$statement->bindParam(':model', $_GET['filters']);
     	$statement->execute();
     	$response['allreg'] = $statement->fetchAll(PDO::FETCH_ASSOC);
-    } else  if (isset($_GET['search'])) {
-    	$statement = $conn->prepare("SELECT * FROM allreg where UPPER(owner) like :search");
+    } else if (isset($_GET['search'])) {
+    	$statement = $conn->prepare("SELECT * FROM allreg where (UPPER(owner) like :search) or (UPPER(license) LIKE :search)");
     	$s = "%" . strtoupper($_GET['search']) ."%";
     	$statement->bindParam(':search', $s);
     	$statement->execute();
     	$response['allreg'] = $statement->fetchAll(PDO::FETCH_ASSOC);
     }
     else if (isset($_GET['filterss'])) {
-    	$statement = $conn->prepare("SELECT * FROM allreg ORDER by data desc limit 10");
+    	$statement = $conn->prepare("SELECT * FROM allreg ORDER by data desc limit 2");
     	$statement->execute();
     	$response['allreg'] = $statement->fetchAll(PDO::FETCH_ASSOC);
     }else if (isset($_GET['carmodels'])) {
-    	$statement = $conn->query("SELECT model as models FROM allreg group by model");
+    	$statement = $conn->prepare("SELECT model as models FROM allreg group by model");
+    	print_r($statement);
     	$statement->execute();
-    	$response['allreg'] = $statement->fetch(PDO::FETCH_ASSOC);
+    	$response['allreg'] = $statement->fetchAll(PDO::FETCH_ASSOC);
    /* } else if (isset($_POST['submit'])) {
 	    	$userscheck = $conn->prepare("SELECT username FROM users where username = :username ");
 	    	$userscheck->bindParam(':username', $_POST['username']);
@@ -66,7 +67,7 @@ try {
 	   		//header('Location: register.php');
 			}*/
      }else {
-    	$statement = $conn->query("SELECT * FROM allreg");
+    	$statement = $conn->query("SELECT * FROM allreg ORDER by data");
     	$response['allreg'] = $statement->fetchAll(PDO::FETCH_ASSOC);
     }
     

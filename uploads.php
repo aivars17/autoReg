@@ -3,7 +3,7 @@ $target_dir = "uploads/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 $csvFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-
+// Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
     $check = filesize($_FILES["fileToUpload"]["tmp_name"]);
     if($check !== false) {
@@ -43,13 +43,14 @@ if ($uploadOk == 0) {
            
             for($id=1;!feof($files);$id++) {
  			 $file = explode(",",rtrim(fgets($files),"\n"));
- 			 $statement = $conn->prepare("INSERT INTO users (username, password, level)
-	    	VALUES (:username, :password, :level)");
+ 			 $statement = $conn->prepare("INSERT INTO allreg (owner, license, model, make)
+	    	VALUES (:owner, :license, :model, :make)");
 			   	// variantas 1
-			   $statement->bindParam(':username', $file[0]);
-			   $hash = password_hash($file[1], PASSWORD_DEFAULT);
-			   $statement->bindParam(':password', $hash);
-			   $statement->bindParam(':level', $file[2]);
+			   $statement->bindParam(':owner', $file[0]);
+			   
+			   $statement->bindParam(':license', $file[1]);
+               $statement->bindParam(':model', $file[2]);
+			   $statement->bindParam(':make', $file[3]);
 			   $statement->execute();
 	   		header('Location: index.php');
  			}

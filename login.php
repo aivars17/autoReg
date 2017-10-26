@@ -36,7 +36,7 @@
    }
 
     if (isset($COOKIE['sausainukas'])) {
-    	echo "labas, ".$_COOKIE['$sausainukas'];
+    	$alert = "Labas, ".$_COOKIE['$sausainukas'];
     }
    
 
