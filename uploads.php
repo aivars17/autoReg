@@ -1,6 +1,6 @@
 <?php
 $target_dir = "uploads/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$target_file = $target_dir .date("Y-m-d_H-i")."-". basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 $csvFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 // Check if image file is a actual image or fake image
@@ -39,7 +39,7 @@ if ($uploadOk == 0) {
         try {
             $conn = new PDO("mysql:host=localhost;dbname=autoreg;charset=utf8", "root", "");
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $files = fopen("uploads/". basename( $_FILES["fileToUpload"]["name"]) ,"r");
+            $files = fopen($target_file ,"r");
            
             for($id=1;!feof($files);$id++) {
  			 $file = explode(",",rtrim(fgets($files),"\n"));

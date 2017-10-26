@@ -1,4 +1,24 @@
-$.getJSON("autodb.php", function(result){
+
+
+$("#fileToUpload").ready(function(){
+
+	$.post("autodb.php",
+	{
+		carmodels: $("#fileToUpload").val(),
+		
+	},
+	function(data, status){
+		if ("#fileToUpload" == true) {
+	$.getJSON("autodb.php", function(result){
+	$.each(result['allreg'], function(i, field){
+		$("#auto_table_body").append("<tr><td>" + field.id + "</td><td>" + field.owner + "</td><td>" + field.license + "</td><td>" + field.model + "</td><td>" + field.make + "</td><td>" + field.data + "</td><td><a class='btn btn-sm btn-danger' id='delet' href='?delete=" + field.id + "'>Delete</a></td></tr>");
+			
+
+	});
+
+});
+} else {
+	$.getJSON("autodb.php", function(result){
 	$.each(result['allreg'], function(i, field){
 		$("#auto_table_body").append("<tr><td>" + field.id + "</td><td>" + field.owner + "</td><td>" + field.license + "</td><td>" + field.model + "</td><td>" + field.make + "</td><td>" + field.data + "</td></tr>");
 			
@@ -6,7 +26,10 @@ $.getJSON("autodb.php", function(result){
 	});
 
 });
+}
+		});
 
+});
 
 
 $("#carmodels").ready(function(){

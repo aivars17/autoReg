@@ -19,12 +19,25 @@ if (isset($_SESSION['username']) && $_SESSION['level'] > 2) {
 }
 
 if (isset($_SESSION['username']) && $_SESSION['level'] >= 2) {
+
 	$usercsv =  '<form style="padding: 20px; background-color: lightgrey;" action="uploads.php" method="post" enctype="multipart/form-data">
 
 	<input class="file" type="file" name="fileToUpload" id="fileToUpload" data-show-preview="false">	
 
 	</form>';
+	if (isset($_GET['delete'])) {
+	$conn = new PDO("mysql:host=localhost;dbname=autoreg;charset=utf8", "root", "");
+		    // set the PDO error mode to exception
+	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = $conn->prepare("DELETE FROM allreg WHERE id = :del");
+    $sql->bindParam(':del', $_GET['delete']);
+    $sql->execute();
+  }
+
 }
+
+
+
 
 function model(){
 	$conn = new PDO("mysql:host=localhost;dbname=autoreg;charset=utf8", "root", "");
